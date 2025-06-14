@@ -3,13 +3,15 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import unicodedata
-
+import os
 app = Flask(__name__)
 app.secret_key = 'clave_super_segura'
 
 # Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+
+cred_dict = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
+creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
 client = gspread.authorize(creds)
 spreadsheet = client.open("prueba")
 sheet = spreadsheet.worksheet("bd1")

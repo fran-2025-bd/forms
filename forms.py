@@ -4,6 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import json
 import unicodedata
 import os
+
 app = Flask(__name__)
 app.secret_key = 'clave_super_segura'
 
@@ -135,4 +136,4 @@ def reglamento():
 # ================= MAIN =================
 
 if __name__ == '__main__':
-    forms.run(debug=True)
+    app.run(debug=True)

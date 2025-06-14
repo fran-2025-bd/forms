@@ -135,4 +135,4 @@ def reglamento():
 # ================= MAIN =================
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    forms.run(debug=True)

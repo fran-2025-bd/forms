@@ -11,11 +11,11 @@ app.secret_key = 'clave_super_segura'
 # Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
-cred_dict = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
-creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
-client = gspread.authorize(creds)
-spreadsheet = client.open("prueba")
-sheet = spreadsheet.worksheet("bd1")
+#cred_dict = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
+#creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
+#client = gspread.authorize(creds)
+#spreadsheet = client.open("prueba")
+#sheet = spreadsheet.worksheet("bd1")
 
 # Credenciales hardcodeadas
 USERS = {

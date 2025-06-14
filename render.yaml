@@ -1,0 +1,17 @@
+# Exported from Render on 2025-06-14T21:50:29Z
+services:
+- type: web
+  name: forms
+  runtime: python
+  repo: https://github.com/fran-2025-bd/forms
+  plan: free
+  envVars:
+  - key: GOOGLE_SERVICE_ACCOUN
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: gunicorn app:app
+  autoDeployTrigger: commit
+  previews:
+    generation: manual
+version: "1"

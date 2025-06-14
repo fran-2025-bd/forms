@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mi-flask-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: GOOGLE_SERVICE_ACCOUNT
+        value: <LO PONÉS EN EL PANEL DE RENDER>

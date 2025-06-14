@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registros - Solo Lectura</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 2rem;
+        }
+
+        h2 {
+            text-align: center;
+            color: #90caf9;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #333;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+
+        .logout {
+            display: block;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .logout a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Registros guardados</h2>
+
+    {% if registros %}
+        <table>
+            <thead>
+                <tr>
+                    {% for key in registros[0].keys() %}
+                        <th>{{ key | capitalize }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in registros %}
+                    <tr>
+                        {% for value in fila.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay registros cargados aún.</p>
+    {% endif %}
+
+    <div class="logout">
+        <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+    </div>
+</body>
+</html>

@@ -4,30 +4,44 @@
     <meta charset="UTF-8">
     <title>Panel Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        /* Fondo con imagen */
         body {
-            background-color: #121212;
-            color: #f0f0f0;
-            font-family: 'Segoe UI', sans-serif;
+            background: url('{{ url_for("static", filename="img/fondo.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            margin: 0;
             padding: 40px;
+            color: #f0f0f0;
         }
+
+        /* Contenedor del menú */
         .container {
-            background-color: #1e1e1e;
+            background-color: rgba(30, 30, 30, 0.85); /* fondo oscuro semitransparente */
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 400px;
+            margin: auto;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 30px;
             font-weight: 700;
         }
+
+        /* Botones modernos unificados */
         .menu-btn {
             display: block;
             width: 100%;
             margin-bottom: 15px;
-            background-color: #0d6efd;
+            background-color: #2962ff;
             border: none;
             padding: 12px;
             border-radius: 8px;
@@ -36,18 +50,42 @@
             font-weight: 600;
             color: #fff;
             text-decoration: none;
+            transition: background-color 0.3s ease;
         }
+
         .menu-btn:hover {
-            background-color: #0b5ed7;
+            background-color: #0039cb;
+        }
+
+        /* Botón Reglamento como botón normal pero con outline */
+        .btn-outline-light {
+            color: #f0f0f0;
+            border: 2px solid #f0f0f0;
+            padding: 12px;
+            border-radius: 8px;
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #f0f0f0;
+            color: #121212;
+            border-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Panel de Administración</h1>
-        <a href="{{ url_for('reglamento') }}" class="btn btn-outline-light mt-3">📘 Reglamento Interno</a>
 
-        <a href="{{ url_for('index') }}" class="menu-btn">➕ Estado de ordenanza </a>
+        <a href="{{ url_for('reglamento') }}" class="btn-outline-light">📘 Reglamento Interno</a>
+
+        <a href="{{ url_for('index') }}" class="menu-btn">➕ Estado de ordenanza</a>
         <a href="{{ url_for('logout') }}" class="menu-btn">🔓 Cerrar sesión</a>
     </div>
 </body>

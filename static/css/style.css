@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<style>
+  /* Reset básico */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eee;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+   background: url('/static/img/fondo.jpg') no-repeat center center/cover;
+    z-index: -1;
+  }
+  .login-wrapper {
+    background-color: rgba(0,0,0,0.55);
+    padding: 40px 50px;
+    border-radius: 12px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+  }
+  .login-wrapper h2 {
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+  .login-wrapper input[type="text"],
+  .login-wrapper input[type="password"] {
+    width: 100%;
+    padding: 14px 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.1);
+    color: #eee;
+    font-size: 16px;
+    outline: none;
+    transition: background-color 0.3s ease;
+  }
+  .login-wrapper input[type="text"]::placeholder,
+  .login-wrapper input[type="password"]::placeholder {
+    color: #ccc;
+  }
+  .login-wrapper input[type="text"]:focus,
+  .login-wrapper input[type="password"]:focus {
+    background-color: rgba(255,255,255,0.2);
+  }
+  .login-wrapper button {
+    width: 100%;
+    padding: 14px 15px;
+    background-color: #2962ff;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .login-wrapper button:hover {
+    background-color: #0039cb;
+  }
+  .error {
+    background-color: #ff4c4c;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 0 8px rgba(255,0,0,0.6);
+  }
+</style>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="login-wrapper">
+  <h2>Iniciar sesión</h2>
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+  <form method="post" action="{{ url_for('login') }}">
+    <input type="text" name="username" placeholder="Usuario" required autofocus />
+    <input type="password" name="password" placeholder="Contraseña" required />
+    <button type="submit">Entrar</button>
+  </form>
+</div>
+
+</body>
+</html>

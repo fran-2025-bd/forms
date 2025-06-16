@@ -8,23 +8,33 @@ import os
 app = Flask(__name__)
 app.secret_key = 'clave_super_segura'
 
-# Google Sheets
+# Configuración de acceso a Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
-cred_dict = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
-creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
+# Autenticación según entorno
+if os.path.exists("credentials.json"):
+    # Modo local: archivo JSON de credenciales
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+else:
+    # Modo producción: variable de entorno con JSON en string
+    json_str = os.getenv("GOOGLE_SERVICE_ACCOUNT")
+    if not json_str:
+        raise Exception("No se encontró la variable de entorno GOOGLE_SERVICE_ACCOUNT con las credenciales")
+    cred_dict = json.loads(json_str)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
+
+# Conexión con Google Sheets
 client = gspread.authorize(creds)
 spreadsheet = client.open("prueba")
 sheet = spreadsheet.worksheet("bd1")
 
-# Credenciales hardcodeadas
+# Usuarios hardcodeados para login
 USERS = {
     "admin": {"password": "1234", "role": "admin"},
     "concejal": {"password": "5678", "role": "lectura"}
 }
 
-# ================= FUNCIONES =================
-
+# Función para normalizar texto (sin acentos y minúsculas)
 def normalizar(texto):
     if not texto:
         return ""
@@ -32,7 +42,7 @@ def normalizar(texto):
     texto = unicodedata.normalize('NFKD', texto)
     return ''.join(c for c in texto if not unicodedata.combining(c))
 
-# ================= LOGIN =================
+# Rutas
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,8 +70,6 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-# ================= ADMIN =================
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if not session.get('logged_in') or session.get('role') != 'admin':
@@ -75,8 +83,6 @@ def index():
 
     return render_template('menu_admin.html')
 
-# ================= SOLO LECTURA =================
-
 @app.route('/solo_lectura')
 def solo_lectura():
     if not session.get('logged_in') or session.get('role') != 'lectura':
@@ -84,8 +90,6 @@ def solo_lectura():
 
     registros = sheet.get_all_records()
     return render_template('solo_lectura.html', registros=registros)
-
-# ================= API de artículos =================
 
 @app.route('/api/articulos')
 def api_articulos():
@@ -102,14 +106,11 @@ def api_articulos():
 
     return jsonify(resultados)
 
-# ================= Vista Reglamento =================
-
 @app.route('/reglamento', methods=['GET', 'POST'])
 def reglamento():
     with open("data/articulos.json", "r", encoding="utf-8") as f:
         articulos = json.load(f)
 
-    # Soporte para búsqueda
     busqueda = request.form.get("busqueda", "").strip()
     normal_busqueda = normalizar(busqueda)
     resultados = []
@@ -120,7 +121,6 @@ def reglamento():
                normal_busqueda in normalizar(articulo.get("contenido", "")):
                 resultados.append(articulo)
 
-    # Soporte para selector individual de artículos
     titulos_articulos = [a['titulo'] for a in articulos]
     articulo_actual = None
     seleccion = request.form.get('articulo_seleccionado')
@@ -132,8 +132,6 @@ def reglamento():
                            busqueda=busqueda,
                            titulos=titulos_articulos,
                            articulo=articulo_actual)
-
-# ================= MAIN =================
 
 if __name__ == '__main__':
     app.run(debug=True)

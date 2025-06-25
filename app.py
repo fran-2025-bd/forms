@@ -101,7 +101,9 @@ def api_articulos():
 
     resultados = [
         a for a in articulos
-        if query_normalizado in normalizar(a['titulo']) or query_normalizado in normalizar(a['contenido'])
+        if query_normalizado in normalizar(a.get('titulo', '')) or
+           query_normalizado in normalizar(a.get('contenido', '')) or
+           query_normalizado in normalizar(a.get('titulo_general', ''))
     ] if query else []
 
     return jsonify(resultados)
